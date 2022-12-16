@@ -12,6 +12,7 @@ import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.CommunityUtil;
 import com.example.lianx.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
+
 
 @Controller
 @RequestMapping("/discuss")
@@ -40,6 +42,7 @@ public class DiscussPostController implements CommunityConstant {
     @Autowired
     private LikeService likeService;
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/add",method = RequestMethod.POST)
     @ResponseBody
     public String addDiscussPost(String title,String content){
@@ -54,13 +57,16 @@ public class DiscussPostController implements CommunityConstant {
         discussPost.setCreateTime(new Date());
         discussPostService.addDiscussPost(discussPost);
 
-
-
         return CommunityUtil.getJSONString(0,"发布成功");
     }
 
     @RequestMapping(path = "/detail/{discussPostId}",method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page){
+        boolean logined=false;
+        if(hostholder.getUser()==null)
+            logined=false;
+        else
+            logined=true;
         DiscussPost discussPost = discussPostService.findDiscussPostById(discussPostId);
         model.addAttribute("post",discussPost);
         User user = userService.findUserById(discussPost.getUserId());
@@ -69,7 +75,11 @@ public class DiscussPostController implements CommunityConstant {
         Long likeCount=likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
         model.addAttribute("likeCount",likeCount);
 
-        int likeStatus=likeService.findEntityLikeStatus(hostholder.getUser().getId(),ENTITY_TYPE_POST, discussPostId);
+        int likeStatus;
+        if(logined)
+            likeStatus=likeService.findEntityLikeStatus(hostholder.getUser().getId(),ENTITY_TYPE_POST, discussPostId);
+        else
+            likeStatus=0;
         model.addAttribute("likeStatus",likeStatus);
 
         page.setLimit(5);
@@ -86,7 +96,10 @@ public class DiscussPostController implements CommunityConstant {
                 commentVo.put("comment",comment);
                 commentVo.put("user",userService.findUserById(comment.getUserId()));
 
-                likeStatus=likeService.findEntityLikeStatus(hostholder.getUser().getId(),ENTITY_TYPE_COMMENT, comment.getId());
+                if (logined)
+                    likeStatus = likeService.findEntityLikeStatus(hostholder.getUser().getId(), ENTITY_TYPE_COMMENT, comment.getId());
+                else
+                    likeStatus = 0;
                 commentVo.put("likeStatus",likeStatus);
                 likeCount=likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
                 commentVo.put("likeCount",likeCount);
@@ -103,7 +116,10 @@ public class DiscussPostController implements CommunityConstant {
                         User target=reply.getTargetId()== 0 ? null : userService.findUserById(reply.getTargetId());
                         replyVo.put("target",target);
 
-                        likeStatus=likeService.findEntityLikeStatus(hostholder.getUser().getId(),ENTITY_TYPE_COMMENT, reply.getId());
+                        if (logined)
+                            likeStatus = likeService.findEntityLikeStatus(hostholder.getUser().getId(), ENTITY_TYPE_COMMENT, reply.getId());
+                        else
+                            likeStatus = 0;
                         replyVo.put("likeStatus",likeStatus);
                         likeCount=likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, reply.getId());
                         replyVo.put("likeCount",likeCount);

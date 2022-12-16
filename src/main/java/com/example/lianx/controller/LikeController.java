@@ -8,6 +8,7 @@ import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.CommunityUtil;
 import com.example.lianx.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,7 @@ public class LikeController implements CommunityConstant {
     @Autowired
     private EventProducer eventProducer;
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(method = RequestMethod.POST,path = "/like")
     @ResponseBody
     public String like(int entityType,int entityId,int entityUserId,int postId){

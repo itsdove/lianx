@@ -10,6 +10,7 @@ import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.CommunityUtil;
 import com.example.lianx.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class FollowController implements CommunityConstant {
     @Autowired
     private EventProducer eventProducer;
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path="/follow",method= RequestMethod.POST)
     @ResponseBody
     public String follow(int entityType,int entityId){
@@ -53,6 +55,7 @@ public class FollowController implements CommunityConstant {
         return CommunityUtil.getJSONString(0,"已关注");
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path="/unfollow",method= RequestMethod.POST)
     @ResponseBody
     public String unfollow(int entityType,int entityId){
@@ -60,6 +63,7 @@ public class FollowController implements CommunityConstant {
         followService.unfollow(user.getId(),entityType,entityId);
         return CommunityUtil.getJSONString(0,"已取消关注");
     }
+
 
     @RequestMapping(path = "/followees/{userId}",method = RequestMethod.GET)
     public String getFollowees(@PathVariable("userId")int userId, Page page, Model model){

@@ -10,6 +10,7 @@ import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.CommunityUtil;
 import com.example.lianx.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class MessageController implements CommunityConstant {
     @Autowired
     private HostHolder hostHolder;
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/letter/list", method = RequestMethod.GET)
     public String getLetterList(Model model, Page page) {
         User user = hostHolder.getUser();
@@ -61,6 +63,7 @@ public class MessageController implements CommunityConstant {
         return "/site/letter";
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/letter/detail/{conversationId}", method = RequestMethod.GET)
     public String getLetterDetail(@PathVariable("conversationId") String conversationId, Page page, Model model) {
         page.setLimit(5);
@@ -112,6 +115,7 @@ public class MessageController implements CommunityConstant {
         }
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/letter/send",method = RequestMethod.POST)
     @ResponseBody
     public String sendLetter(String toName,String content){
@@ -134,6 +138,7 @@ public class MessageController implements CommunityConstant {
         return CommunityUtil.getJSONString(0);
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/notice/list",method=RequestMethod.GET)
     public String getNoticeList(Model model){
         User user = hostHolder.getUser();
@@ -203,6 +208,7 @@ public class MessageController implements CommunityConstant {
         return "/site/notice";
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/notice/detail/{topic}",method=RequestMethod.GET)
     public String getNoticeDetail(@PathVariable("topic")String topic ,Page page ,Model model){
         User user=hostHolder.getUser();

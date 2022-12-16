@@ -9,6 +9,7 @@ import com.example.lianx.service.DiscussPostService;
 import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class CommentController implements CommunityConstant {
     @Autowired
     private DiscussPostService discussPostService;
 
+    @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/add/{discussPostId}",method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId")int discussPostId, Comment comment){
         comment.setUserId(hostHolder.getUser().getId());

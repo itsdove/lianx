@@ -27,7 +27,7 @@ public class SecurityConfig  {
                                 // 放行登录接口
                                 .requestMatchers("/login","/kaptcha","/register","/index","/user/header/*","/discuss/detail/*","/user/profile/*").permitAll()
                                 // 放行资源目录
-                                .requestMatchers("/resources/**").permitAll()
+                                .requestMatchers("/css/*","/js/*").permitAll()
                                 // 其余的都需要权限校验
                                 .anyRequest().authenticated()
                                 // 防跨站请求伪造

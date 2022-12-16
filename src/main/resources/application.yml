@@ -1,0 +1,67 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /community
+
+mybatis:
+  mapper-locations: classpath:com.example.lianx.mapper/*.xml
+  type-aliases-package: com.example.lianx.entity
+  configuration:
+    useGeneratedKeys: true
+    mapUnderscoreToCamelCase: true
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  datasource:
+    url: jdbc:mysql://localhost:3306/community
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1119626775@qq.com
+    password: gtancicrlrklifci
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+  data:
+    redis:
+      database: 0
+      host: 192.168.226.130
+      port: 6379
+      password: lxm
+      lettuce:
+        pool:
+          min-idle: 0
+          max-active: 8
+          max-idle: 8
+          max-wait: -1ms
+      connect-timeout: 30000ms
+  kafka:
+    bootstrap-servers: 192.168.226.130:9092
+    producer:
+      retries: 3  # 生产者发送失败时，重试次数
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer # 生产者消息key和消息value的序列化处理类
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: tomge-consumer-group  # 默认消费者group id
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 100
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+community:
+  path:
+    domain: http://localhost:8080
+    upload: D:/myjob/upload
+

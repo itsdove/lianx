@@ -149,7 +149,8 @@ public class  LoginController implements CommunityConstant {
         list.add("user");
         if(type==1)
             list.add("operator");
-
+        if(type==2)
+            list.add("owner");
 
         if(SpringSecurityUtil.isLogin()){
             // 登陆了打印一下当前用户名
@@ -164,7 +165,8 @@ public class  LoginController implements CommunityConstant {
         authorities.add((GrantedAuthority) () -> "user");
         if(type==1)
             authorities.add((GrantedAuthority) () -> "operator");
-        
+        if(type==2)
+            authorities.add((GrantedAuthority) () -> "owner");
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
         SecurityContextHolder.setContext(new SecurityContextImpl(token));
 

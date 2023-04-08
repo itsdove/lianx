@@ -17,6 +17,34 @@ public class RedisKeyUtil {
     public static final String PREFIX_TICKET="ticket";
 
     public static final String PREFIX_USER="user";
+    //数据统计
+    private static final String PREFIX_UV = "uv";
+    private static final String PREFIX_DAU = "dau";
+    //帖子分数
+    private static final String PREFIX_POST = "post";
+    //热帖
+    private static final String PREFIX_HOT_POST = "hot:post";
+
+
+    // 单日UV
+    public static String getUVKey(String date) {
+        return PREFIX_UV + SPLIT + date;
+    }
+
+    // 区间UV
+    public static String getUVKey(String startDate, String endDate) {
+        return PREFIX_UV + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    // 单日活跃用户
+    public static String getDAUKey(String date) {
+        return PREFIX_DAU + SPLIT + date;
+    }
+
+    // 区间活跃用户
+    public static String getDAUKey(String startDate, String endDate) {
+        return PREFIX_DAU + SPLIT + startDate + SPLIT + endDate;
+    }
 
     public static String getEntityLikeKey(int entityType,int entityId){
         return PREFIX_ENTITY_LIKE+SPLIT+entityType+SPLIT+entityId;

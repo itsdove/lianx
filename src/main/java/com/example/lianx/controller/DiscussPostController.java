@@ -1,9 +1,6 @@
 package com.example.lianx.controller;
 
-import com.example.lianx.entity.Comment;
-import com.example.lianx.entity.DiscussPost;
-import com.example.lianx.entity.Page;
-import com.example.lianx.entity.User;
+import com.example.lianx.entity.*;
 import com.example.lianx.service.CommentService;
 import com.example.lianx.service.DiscussPostService;
 import com.example.lianx.service.LikeService;
@@ -138,6 +135,31 @@ public class DiscussPostController implements CommunityConstant {
 
         model.addAttribute("comments",commentVoList);
         return "/site/discuss-detail";
+    }
+
+
+    // 置顶
+    @RequestMapping(path = "/top", method = RequestMethod.POST)
+    @ResponseBody
+    public String setTop(int id) {
+        discussPostService.updateType(id, 1);
+        return CommunityUtil.getJSONString(0);
+    }
+
+    // 加精
+    @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
+    @ResponseBody
+    public String setWonderful(int id) {
+        discussPostService.updateStatus(id, 1);
+        return CommunityUtil.getJSONString(0);
+    }
+
+    // 删除
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String setDelete(int id) {
+        discussPostService.updateStatus(id, 2);
+        return CommunityUtil.getJSONString(0);
     }
 
 }

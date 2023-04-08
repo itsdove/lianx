@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,4 +46,22 @@ public class DiscussPostService {
     public int updateCommentCount(int id,int commentCount){
         return discussPostMapper.updateCommentCount(id,commentCount);
     }
+
+
+    public List<Object> searchDiscussPost(String keyword, int i, int limit) {
+        List<DiscussPost> discussPosts = discussPostMapper.searchDiscussPost("%"+keyword+"%", i, limit);
+        List<Object> res = new ArrayList<>();
+        res.add(discussPosts.size());
+        res.add(discussPosts);
+        return res;
+    }
+
+    public int updateType(int id, int type) {
+        return discussPostMapper.updateType(id, type);
+    }
+
+    public int updateStatus(int id, int status) {
+        return discussPostMapper.updateStatus(id, status);
+    }
+
 }

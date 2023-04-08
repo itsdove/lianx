@@ -135,6 +135,7 @@ public class UserService implements CommunityConstant {
         }
 
         LoginTicket loginTicket=new LoginTicket();
+        map.put("type",user.getType());
         loginTicket.setUserId(user.getId());
         loginTicket.setTicket(CommunityUtil.generateUUID());
         loginTicket.setStatus(0);

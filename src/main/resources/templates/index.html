@@ -3,15 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
+    <link rel="icon" href="https://gs.jnu.edu.cn/_upload/tpl/0b/4b/2891/template2891/images/logo.ico"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/global.css}" />
-    <title>牛客网-首页</title>
+    <title>暨南大学学生论坛-首页</title>
 </head>
 <body>
 <div class="nk-container">
     <!-- 头部 -->
-    <header class="bg-dark sticky-top" th:fragment="header">
+    <header class="bg-white sticky-top" th:fragment="header">
         <div class="container">
             <!-- 导航 -->
             <nav class="navbar navbar-expand-lg navbar-dark">
@@ -24,35 +24,35 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item ml-3 btn-group-vertical">
-                            <a class="nav-link" th:href="@{/index}">首页</a>
+                            <a class="nav-link" th:href="@{/index}" style="color:black;">首页</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
-                            <a class="nav-link position-relative" th:href="@{/letter/list}">消息
-                                <span class="badge badge-danger" th:text="${allUnreadCount!=0?allUnreadCount:''}">12</span></a>
+                            <a class="nav-link position-relative" th:href="@{/letter/list}" style="color:black;">消息
+                                <span class="badge badge-danger" th:text="${allUnreadCount!=0?allUnreadCount:''}" style="color:black;">12</span></a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
-                            <a class="nav-link" th:href="@{/register}">注册</a>
+                            <a class="nav-link" th:href="@{/register}" style="color:black;">注册</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
-                            <a class="nav-link" th:href="@{/login}">登录</a>
+                            <a class="nav-link" th:href="@{/login}" style="color:black;">登录</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical dropdown" th:if="${loginUser!=null}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:30px;"/>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">个人主页</a>
-                                <a class="dropdown-item text-center" th:href="@{/user/setting}">账号设置</a>
-                                <a class="dropdown-item text-center" th:href="@{/logout}">退出登录</a>
+                                <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}" style="color:black;">个人主页</a>
+                                <a class="dropdown-item text-center" th:href="@{/user/setting}" style="color:black;">账号设置</a>
+                                <a class="dropdown-item text-center" th:href="@{/logout}" style="color:black;">退出登录</a>
                                 <div class="dropdown-divider"></div>
                                 <span class="dropdown-item text-center text-secondary" th:utext="${loginUser.username}">nowcoder</span>
                             </div>
                         </li>
                     </ul>
                     <!-- 搜索 -->
-                    <form class="form-inline my-2 my-lg-0" action="site/search.html">
-                        <input class="form-control mr-sm-2" type="search" aria-label="Search" />
-                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">搜索</button>
+                    <form class="form-inline my-2 my-lg-0" method="get" th:action="@{/search}" >
+                        <input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}"/>
+                        <button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="color:black;">搜索</button>
                     </form>
                 </div>
             </nav>
@@ -119,10 +119,10 @@
 
             <!-- 帖子列表 -->
             <ul class="list-unstyled">
-                <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussPosts}">
-                    <a th:href="@{|/user/profile/${map.user.id}|}">
+                <li class="forum-card" th:each="map:${discussPosts}">
+                    <div><a th:href="@{|/user/profile/${map.user.id}|}">
                         <img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width:50px;height:50px;">
-                    </a>
+                    </a></div>
                     <div class="media-body">
                         <h6 class="mt-0 mb-3">
                             <a th:href="@{|/discuss/detail/${map.post.id}|}" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
@@ -166,55 +166,13 @@
     <footer class="bg-dark">
         <div class="container">
             <div class="row">
-                <!-- 二维码 -->
-                <div class="col-4 qrcode">
-                    <img src="https://uploadfiles.nowcoder.com/app/app_download.png" class="img-thumbnail" style="width:136px;" />
-                </div>
                 <!-- 公司信息 -->
                 <div class="col-8 detail-info">
                     <div class="row">
                         <div class="col">
                             <ul class="nav">
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">关于我们</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">加入我们</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">意见反馈</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">企业服务</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link text-light" href="#">联系我们</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">免责声明</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-light" href="#">友情链接</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <ul class="nav btn-group-vertical company-info">
-                                <li class="nav-item text-white-50">
-                                    公司地址：北京市朝阳区大屯路东金泉时代3-2708北京牛客科技有限公司
-                                </li>
-                                <li class="nav-item text-white-50">
-                                    联系方式：010-60728802(电话)&nbsp;&nbsp;&nbsp;&nbsp;admin@nowcoder.com
-                                </li>
-                                <li class="nav-item text-white-50">
-                                    牛客科技©2018 All rights reserved
-                                </li>
-                                <li class="nav-item text-white-50">
-                                    京ICP备14055008号-4 &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <img src="http://static.nowcoder.com/company/images/res/ghs.png" style="width:18px;" />
-                                    京公网安备 11010502036488号
                                 </li>
                             </ul>
                         </div>

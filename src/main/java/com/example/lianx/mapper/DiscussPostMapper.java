@@ -18,4 +18,10 @@ public interface DiscussPostMapper {
     DiscussPost selectDiscussPostById(int id);
 
     int updateCommentCount(int id,int commentCount);
+
+    List<DiscussPost> searchDiscussPost(String keyword,int offset,int limit);
+
+    int updateType(int id, int type);
+
+    int updateStatus(int id, int status);
 }

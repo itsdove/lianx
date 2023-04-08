@@ -21,7 +21,7 @@ body {
 }
 
 header .navbar-brand {
-	background: url('http://static.nowcoder.com/images/res/logo/logo-v3.png') no-repeat;
+	background: url('https://www.jnu.edu.cn/_upload/tpl/00/f5/245/template245/images/home/logo.png') no-repeat;
 	background-size: 147px 42px;
 	width: 147px;
 	height: 42px;
@@ -142,4 +142,35 @@ a:hover {
 em {
 	font-style: normal;
 	color: red;
+}
+
+.forum-card {
+	display: flex;
+	/*flex-direction: column;*/
+	justify-content: space-between;
+	/*align-items: center;*/
+	width: 800px;
+	height: 100px;
+	padding: 20px;
+	margin: 20px auto;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease-in-out;
+}
+
+.forum-card:hover {
+	transform: translateY(-10px);
+	box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.forum-card > h2 {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 10px 0;
+}
+
+.forum-card > p {
+	font-size: 16px;
+	line-height: 1.5;
+	margin: 10px 0;
 }

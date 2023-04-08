@@ -81,7 +81,7 @@ public class FollowService implements CommunityConstant {
     }
 
     public List<Map<String,Object>> findFollowers(int userId,int offset,int limit){
-        String followerKey=RedisKeyUtil.getFolloweeKey(ENTITY_TYPE_USER,userId);
+        String followerKey=RedisKeyUtil.getFollowerKey(ENTITY_TYPE_USER,userId);
         Set<Integer> targetIds = redisTemplate.opsForZSet().reverseRange(followerKey, offset, offset + limit - 1);
         if(targetIds==null){
             return null;
@@ -93,6 +93,7 @@ public class FollowService implements CommunityConstant {
             map.put("user",userById);
             Double score=redisTemplate.opsForZSet().score(followerKey,targetId);
             map.put("followTime",new Date(score.longValue()));
+            list.add(map);
         }
         return list;
     }

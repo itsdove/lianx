@@ -25,7 +25,7 @@ public class SecurityConfig  {
                     try {
                         authorize
                                 // 放行登录接口
-                                .requestMatchers("/login","/kaptcha","/register","/index","/user/header/*","/discuss/detail/*","/user/profile/*").permitAll()
+                                .requestMatchers("/login","/kaptcha","/register","/index","/activation/*/*","/user/header/*","/discuss/detail/*","/user/profile/*").permitAll()
                                 // 放行资源目录
                                 .requestMatchers("/css/*","/js/*").permitAll()
                                 // 其余的都需要权限校验

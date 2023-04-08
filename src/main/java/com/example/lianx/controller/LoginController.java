@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Controller
-public class LoginController implements CommunityConstant {
+public class  LoginController implements CommunityConstant {
 
     @Autowired
     private UserService userService;
@@ -145,7 +145,11 @@ public class LoginController implements CommunityConstant {
         httpServletResponse.addCookie(cookie);
 
         List<String> list=new ArrayList<>();
+        int type =(int) map.get("type");
         list.add("user");
+        if(type==1)
+            list.add("operator");
+
 
         if(SpringSecurityUtil.isLogin()){
             // 登陆了打印一下当前用户名
@@ -156,7 +160,11 @@ public class LoginController implements CommunityConstant {
         }
 
         List<GrantedAuthority> authorities=new ArrayList<>();
+
         authorities.add((GrantedAuthority) () -> "user");
+        if(type==1)
+            authorities.add((GrantedAuthority) () -> "operator");
+        
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
         SecurityContextHolder.setContext(new SecurityContextImpl(token));
 

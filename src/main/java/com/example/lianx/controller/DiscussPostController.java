@@ -139,6 +139,7 @@ public class DiscussPostController implements CommunityConstant {
 
 
     // 置顶
+    @PreAuthorize("hasAuthority('owner')")
     @RequestMapping(path = "/top", method = RequestMethod.POST)
     @ResponseBody
     public String setTop(int id) {
@@ -147,6 +148,7 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 加精
+    @PreAuthorize("hasAuthority('owner')")
     @RequestMapping(path = "/wonderful", method = RequestMethod.POST)
     @ResponseBody
     public String setWonderful(int id) {
@@ -155,6 +157,7 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 删除
+    @PreAuthorize("hasAuthority('owner')")
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String setDelete(int id) {

@@ -34,7 +34,7 @@ spring:
   data:
     redis:
       database: 0
-      host: 192.168.226.130
+      host: 47.115.203.121
       port: 6379
       password: lxm
       lettuce:
@@ -45,7 +45,7 @@ spring:
           max-wait: -1ms
       connect-timeout: 30000ms
   kafka:
-    bootstrap-servers: 192.168.226.130:9092
+    bootstrap-servers: 47.115.203.121:9092
     producer:
       retries: 3  # 生产者发送失败时，重试次数
       batch-size: 16384

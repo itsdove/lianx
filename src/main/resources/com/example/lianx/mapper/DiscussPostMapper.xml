@@ -9,7 +9,7 @@
 
     <sql id="insertFields">
         user_id
-        , title, content, type, status, create_time, comment_count, score
+        , title, content, type, status, create_time, comment_count, score,posttype
     </sql>
 
     <select id="selectDiscussPosts" resultType="com.example.lianx.entity.DiscussPost">
@@ -17,6 +17,7 @@
         <include refid="selectFields"></include>
         from discuss_post
         where status != 2
+        and posttype=#{posttype}
         <if test="userId!=0">
             and user_id = #{userId}
         </if>
@@ -28,6 +29,7 @@
         select count(id)
         from discuss_post
         where status!=2
+        and posttype=#{posttype}
         <if test="userId!=0">
             and user_id=#{userId}
         </if>
@@ -35,7 +37,7 @@
 
     <insert id="insertDiscussPostRows" parameterType="com.example.lianx.entity.DiscussPost" keyProperty="id">
         insert into discuss_post(<include refid="insertFields"/>)
-        values (#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score})
+        values (#{userId},#{title},#{content},#{type},#{status},#{createTime},#{commentCount},#{score},#{posttype})
     </insert>
 
     <select id="selectDiscussPostById" resultType="com.example.lianx.entity.DiscussPost">

@@ -42,12 +42,13 @@ public class DiscussPostController implements CommunityConstant {
     @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path = "/add",method = RequestMethod.POST)
     @ResponseBody
-    public String addDiscussPost(String title,String content){
+    public String addDiscussPost(int posttype,String title,String content){
         User user = hostholder.getUser();
         if(user==null) {
             return CommunityUtil.getJSONString(403,"没有登录");
         }
         DiscussPost discussPost=new DiscussPost();
+        discussPost.setPosttype(posttype);
         discussPost.setUserId(user.getId());
         discussPost.setTitle(title);
         discussPost.setContent(content);

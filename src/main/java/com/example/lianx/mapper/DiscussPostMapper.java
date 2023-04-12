@@ -9,9 +9,9 @@ import org.apache.ibatis.annotations.Param;
 
 public interface DiscussPostMapper {
 
-    List<DiscussPost> selectDiscussPosts(int userId,int offset,int limit);
+    List<DiscussPost> selectDiscussPosts(int userId,int offset,int limit,int posttype);
 
-    int selectDiscussPostRows(@Param("userId")int userId);
+    int selectDiscussPostRows(@Param("userId")int userId,int posttype);
 
     int insertDiscussPostRows(DiscussPost discussPost);
 

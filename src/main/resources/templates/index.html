@@ -66,10 +66,16 @@
                 <!-- 筛选条件 -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">最新</a>
+                        <a th:class="|nav-link ${posttype==0?'active':''}|" th:href="@{/index(posttype=0)}">推荐</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">最热</a>
+                        <a th:class="|nav-link ${posttype==1?'active':''}|" th:href="@{/index(posttype=1)}">寻物启示</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:class="|nav-link ${posttype==2?'active':''}|" th:href="@{/index(posttype=2)}">二手市场</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:class="|nav-link ${posttype==3?'active':''}|" th:href="@{/index(posttype=3)}">学习交流</a>
                     </li>
                 </ul>
                 <button type="button" class="btn btn-primary btn-sm position-absolute rt-0" data-toggle="modal" data-target="#publishModal" th:if="${loginUser!=null}">我要发布</button>
@@ -86,6 +92,14 @@
                         </div>
                         <div class="modal-body">
                             <form>
+                                <div class="form-group">
+                                    <label for="recipient-name" class="col-form-label">帖子类型：</label>
+                                <select id="posttype" class="form-control">
+                                    <option value="1">寻物启示</option>
+                                    <option value="2">二手市场</option>
+                                    <option value="3">学习交流</option>
+                                </select>
+                                </div>
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">标题：</label>
                                     <input type="text" class="form-control" id="recipient-name">

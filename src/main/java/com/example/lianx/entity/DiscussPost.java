@@ -29,6 +29,16 @@ public class DiscussPost {
 
     private String content;
 
+    private int posttype;
+
+    public int getPosttype() {
+        return posttype;
+    }
+
+    public void setPosttype(int posttype) {
+        this.posttype = posttype;
+    }
+
     public int getId() {
         return id;
     }

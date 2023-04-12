@@ -8,10 +8,11 @@ function publish() {
 	// 获取标题和内容
 	var title = $("#recipient-name").val();
 	var content = $("#message-text").val();
+	var posttype=$("#posttype").val();
 	// 发送异步请求(POST)
 	$.post(
 		CONTEXT_PATH + "/discuss/add",
-		{"title":title,"content":content},
+		{"posttype":posttype,"title":title,"content":content},
 		function(data) {
 			data = $.parseJSON(data);
 			// 在提示框中显示返回消息

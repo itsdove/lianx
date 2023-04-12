@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,11 +33,11 @@ public class HomeController implements CommunityConstant {
     private LikeService likeService;
 
     @RequestMapping(path = "/index",method = RequestMethod.GET)
-    public String  getIndexPage(Model model, Page page){
-        page.setRows(disscusPostService.findDiscussPostRows(0));
-        page.setPath("/index");
+    public String  getIndexPage(Model model, Page page, @RequestParam(name="posttype",defaultValue ="0")int posttype){
+        page.setRows(disscusPostService.findDiscussPostRows(0,posttype));
+        page.setPath("/index?posttype="+posttype);
 
-        List<DiscussPost> list = disscusPostService.findDiscussPosts(0, page.getOffset(), page.getLimit());
+        List<DiscussPost> list = disscusPostService.findDiscussPosts(0, page.getOffset(), page.getLimit(),posttype);
         List<Map<String,Object>> discussPosts =new ArrayList<>();
         if(list!=null){
             for(DiscussPost post:list){
@@ -50,6 +51,7 @@ public class HomeController implements CommunityConstant {
             }
         }
         model.addAttribute("discussPosts",discussPosts);
+        model.addAttribute("posttype",posttype);
         return "/index";
     }
 

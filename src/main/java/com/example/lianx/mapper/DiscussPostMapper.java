@@ -4,6 +4,7 @@ import com.example.lianx.entity.DiscussPost;
 
 import java.util.List;
 
+import com.example.lianx.entity.ReplyPostResult;
 import org.apache.ibatis.annotations.Param;
 
 
@@ -24,4 +25,6 @@ public interface DiscussPostMapper {
     int updateType(int id, int type);
 
     int updateStatus(int id, int status);
+
+    List<ReplyPostResult> selectReplyDiscussPosts(int userId, int offset, int limit);
 }

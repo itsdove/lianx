@@ -187,4 +187,30 @@ public class UserService implements CommunityConstant {
         String redisKey=RedisKeyUtil.getUserKey(userId);
         redisTemplate.delete(redisKey);
     }
+
+    // 修改密码
+    public Map<String, Object> updatePassword(int userId, String oldPassword, String newPassword) {
+        Map<String, Object> map = new HashMap<>();
+
+        // 空值处理
+        if (StringUtils.isBlank(oldPassword)) {
+            map.put("oldPasswordMsg", "原密码不能为空！");
+            return map;
+        }
+        if (StringUtils.isBlank(newPassword)) {
+            map.put("newPasswordMsg", "新密码不能为空！");
+            return map;
+        }
+        User user = userMapper.selectById(userId);
+        // 验证原密码
+        String password = CommunityUtil.md5(oldPassword + user.getSalt());
+        if (!password.equals(user.getPassword())) {
+            map.put("oldPasswordMsg", "原密码不正确！");
+            return map;
+        }
+        //修改密码
+        userMapper.updatePassword(userId, CommunityUtil.md5(newPassword + user.getSalt()));
+        return map;
+    }
+
 }

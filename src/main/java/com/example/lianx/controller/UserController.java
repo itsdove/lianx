@@ -1,10 +1,11 @@
 package com.example.lianx.controller;
 
 import com.example.lianx.annotation.LoginRequired;
+import com.example.lianx.entity.DiscussPost;
+import com.example.lianx.entity.Page;
+import com.example.lianx.entity.ReplyPostResult;
 import com.example.lianx.entity.User;
-import com.example.lianx.service.FollowService;
-import com.example.lianx.service.LikeService;
-import com.example.lianx.service.UserService;
+import com.example.lianx.service.*;
 import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.CommunityUtil;
 import com.example.lianx.util.HostHolder;
@@ -26,6 +27,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -54,6 +59,11 @@ public class UserController implements CommunityConstant {
     @Autowired
     private FollowService followService;
 
+    @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
+    private CommentService commentService;
 
     @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path="/setting",method= RequestMethod.GET)
@@ -134,4 +144,100 @@ public class UserController implements CommunityConstant {
         return "/site/profile";
     }
 
+    @LoginRequired
+    @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
+    public String updatePassword(String oldPassword, String newPassword, Model model) {
+        User user = hostHolder.getUser();
+        Map<String, Object> map = userService.updatePassword(user.getId(), oldPassword, newPassword);
+        if (map == null || map.isEmpty()) {
+            return "redirect:/logout";
+        } else {
+            model.addAttribute("oldPasswordMsg", map.get("oldPasswordMsg"));
+            model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
+            return "/site/setting";
+        }
+    }
+
+    // 用户发布的帖子
+    @RequestMapping(path = "/post/{userId}", method = RequestMethod.GET)
+    public String getUserPost(@PathVariable("userId") int userId, Model model, Page page) {
+
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在！");
+        }
+        // 用户信息
+        model.addAttribute("user", user);
+
+        // 帖子总数
+        int postCount = discussPostService.findDiscussPostRows(userId,0);
+        model.addAttribute("postCount", postCount);
+
+        // 分页相关参数
+        page.setRows(postCount);
+        page.setPath("/user/post/" + userId);
+
+        // 主语，怎样显示，是我的帖子，还是TA的帖子
+        String subject = "我";
+        user = hostHolder.getUser();
+        if (user == null || userId != user.getId()) {
+            subject = "TA";
+        }
+        // 小标题显示信息
+        model.addAttribute("subject", subject);
+
+        // 帖子
+        List<DiscussPost> list = discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit(),0);
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+        if (list != null) {
+            for (DiscussPost post : list) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
+                // 查询帖子赞的数量
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
+
+                discussPosts.add(map);
+            }
+        }
+        // 帖子相关信息
+        model.addAttribute("discussPosts", discussPosts);
+
+        return "/site/my-post";
+    }
+
+    // 用户回复的帖子
+    @RequestMapping(path = "/reply/{userId}", method = RequestMethod.GET)
+    public String getUserReply(@PathVariable("userId") int userId, Model model, Page page) {
+
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("该用户不存在！");
+        }
+        // 用户信息
+        model.addAttribute("user", user);
+
+        // 主语，怎样显示，是我的帖子，还是TA的帖子
+        String subject = "我";
+        user = hostHolder.getUser();
+        if (user == null || userId != user.getId()) {
+            subject = "TA";
+        }
+        // 小标题显示信息
+        model.addAttribute("subject", subject);
+
+        // 帖子总数
+        int postCount = commentService.findPostCommentCountByUserId(userId, ENTITY_TYPE_POST);
+        model.addAttribute("postCount", postCount);
+
+        // 分页相关参数
+        page.setRows(postCount);
+        page.setPath("/user/reply/" + userId);
+
+        //帖子及回复的相关信息
+        List<ReplyPostResult> list = discussPostService.findReplyDiscussPosts(userId, page.getOffset(), page.getLimit());
+        model.addAttribute("replyPost", list);
+
+        return "/site/my-reply";
+    }
 }

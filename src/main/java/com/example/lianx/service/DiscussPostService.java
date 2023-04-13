@@ -1,6 +1,7 @@
 package com.example.lianx.service;
 
 import com.example.lianx.entity.DiscussPost;
+import com.example.lianx.entity.ReplyPostResult;
 import com.example.lianx.mapper.DiscussPostMapper;
 import com.example.lianx.util.SensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,4 +65,7 @@ public class DiscussPostService {
         return discussPostMapper.updateStatus(id, status);
     }
 
+    public List<ReplyPostResult> findReplyDiscussPosts(int userId, int offset, int limit) {
+        return discussPostMapper.selectReplyDiscussPosts(userId,offset,limit);
+    }
 }

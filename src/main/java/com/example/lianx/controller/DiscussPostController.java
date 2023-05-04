@@ -135,7 +135,7 @@ public class DiscussPostController implements CommunityConstant {
         }
 
         model.addAttribute("comments",commentVoList);
-        return "/site/discuss-detail";
+        return "site/discuss-detail";
     }
 
 
@@ -158,7 +158,7 @@ public class DiscussPostController implements CommunityConstant {
     }
 
     // 删除
-    @PreAuthorize("hasAuthority('owner')")
+    @PreAuthorize("hasAuthority('system')")
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String setDelete(int id) {

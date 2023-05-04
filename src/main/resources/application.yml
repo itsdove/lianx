@@ -11,12 +11,16 @@ mybatis:
     mapUnderscoreToCamelCase: true
 
 spring:
+#  thymeleaf:
+#    cache: false
+#    prefix: classpath:/templates
+#    suffix: .html
   servlet:
     multipart:
       max-file-size: -1
       max-request-size: -1
   datasource:
-    url: jdbc:mysql://localhost:3306/community
+    url: jdbc:mysql://localhost:3306/jnu
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver

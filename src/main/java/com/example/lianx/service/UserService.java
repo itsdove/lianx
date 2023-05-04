@@ -74,6 +74,12 @@ public class UserService implements CommunityConstant {
             return map;
         }
 
+        u=userMapper.selectByEmail(user.getEmail());
+        if(u!=null){
+            map.put("emailMsg","邮箱已被注册");
+            return map;
+        }
+
         user.setSalt(CommunityUtil.generateUUID().substring(0,5));
         user.setPassword(CommunityUtil.md5(user.getPassword()+user.getSalt()));
         user.setType(0);

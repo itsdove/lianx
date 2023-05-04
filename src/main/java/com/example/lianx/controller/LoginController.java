@@ -10,7 +10,6 @@ import com.google.code.kaptcha.Producer;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,16 +21,11 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,12 +50,12 @@ public class  LoginController implements CommunityConstant {
 
     @RequestMapping(path="/register",method= RequestMethod.GET)
     public String getRegisterPage(){
-        return "/site/register";
+        return "site/register";
     }
 
     @RequestMapping(path="/login",method= RequestMethod.GET)
     public String getLoginPage(){
-        return "/site/login";
+        return "site/login";
     }
 
 
@@ -72,12 +66,12 @@ public class  LoginController implements CommunityConstant {
         if(map==null||map.isEmpty()){
             model.addAttribute("msg","注册成功，已发送邮件");
             model.addAttribute("target","/index");
-            return "/site/operate-result";
+            return "site/operate-result";
         }else{
             model.addAttribute("usernameMsg",map.get("usernameMsg"));
             model.addAttribute("passwordMsg",map.get("passwordMsg"));
             model.addAttribute("emailMsg",map.get("emailMsg"));
-            return "/site/register";
+            return "site/register";
         }
     }
 
@@ -94,7 +88,7 @@ public class  LoginController implements CommunityConstant {
             model.addAttribute("msg","激活失败，激活码不正确");
             model.addAttribute("target","/index");
         }
-        return "/site/operate-result";
+        return "site/operate-result";
     }
 
     @RequestMapping(path="/kaptcha",method= RequestMethod.GET)
@@ -133,7 +127,7 @@ public class  LoginController implements CommunityConstant {
 
     if(StringUtils.isBlank(kaptcha)||StringUtils.isBlank(code)||!kaptcha.equalsIgnoreCase(code)){
         model.addAttribute("codeMsg","验证码不正确");
-        return "/site/login";
+        return "site/login";
     }
 
     int expiredSeconds=rememberme?REMEMBER_EXPIRED_SECONDS:DEFAULT_EXPIRED_SECONDS;
@@ -148,7 +142,7 @@ public class  LoginController implements CommunityConstant {
         int type =(int) map.get("type");
         list.add("user");
         if(type==1)
-            list.add("operator");
+            list.add("system");
         if(type==2)
             list.add("owner");
 
@@ -164,7 +158,7 @@ public class  LoginController implements CommunityConstant {
 
         authorities.add((GrantedAuthority) () -> "user");
         if(type==1)
-            authorities.add((GrantedAuthority) () -> "operator");
+            authorities.add((GrantedAuthority) () -> "system");
         if(type==2)
             authorities.add((GrantedAuthority) () -> "owner");
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, authorities);
@@ -186,5 +180,13 @@ public class  LoginController implements CommunityConstant {
         SecurityContextHolder.clearContext();
         return "redirect:/login";
     }
+    @RequestMapping(path="/forget",method = RequestMethod.GET)
+    public  String logout() {
+        return "site/forget";
+    }
 
+    @RequestMapping(path="/reset",method = RequestMethod.POST)
+    public  String reset(String email) {
+        return "site/forget";
+    }
 }

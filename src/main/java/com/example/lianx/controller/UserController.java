@@ -68,7 +68,7 @@ public class UserController implements CommunityConstant {
     @PreAuthorize("hasAuthority('user')")
     @RequestMapping(path="/setting",method= RequestMethod.GET)
     public String getSettingPage(){
-        return "/site/setting";
+        return "site/setting";
     }
 
 
@@ -141,7 +141,7 @@ public class UserController implements CommunityConstant {
             hasFollowed=followService.hasFollowed(hostHolder.getUser().getId(),ENTITY_TYPE_USER,userId);
         }
         model.addAttribute("hasFollowed",hasFollowed);
-        return "/site/profile";
+        return "site/profile";
     }
 
     @LoginRequired
@@ -154,7 +154,7 @@ public class UserController implements CommunityConstant {
         } else {
             model.addAttribute("oldPasswordMsg", map.get("oldPasswordMsg"));
             model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
-            return "/site/setting";
+            return "site/setting";
         }
     }
 
@@ -203,7 +203,7 @@ public class UserController implements CommunityConstant {
         // 帖子相关信息
         model.addAttribute("discussPosts", discussPosts);
 
-        return "/site/my-post";
+        return "site/my-post";
     }
 
     // 用户回复的帖子
@@ -238,6 +238,6 @@ public class UserController implements CommunityConstant {
         List<ReplyPostResult> list = discussPostService.findReplyDiscussPosts(userId, page.getOffset(), page.getLimit());
         model.addAttribute("replyPost", list);
 
-        return "/site/my-reply";
+        return "site/my-reply";
     }
 }

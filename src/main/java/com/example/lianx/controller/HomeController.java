@@ -52,11 +52,11 @@ public class HomeController implements CommunityConstant {
         }
         model.addAttribute("discussPosts",discussPosts);
         model.addAttribute("posttype",posttype);
-        return "/index";
+        return "index";
     }
 
     @RequestMapping(path = "/error",method = RequestMethod.GET)
     public String  getErrorPage() {
-        return "/error/404";
+        return "error/404";
     }
 }

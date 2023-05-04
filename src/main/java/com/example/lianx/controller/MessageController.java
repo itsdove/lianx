@@ -60,7 +60,7 @@ public class MessageController implements CommunityConstant {
         int noticeUnreadCount=messageService.findNoticeUnreadCount(user.getId(),null);
         model.addAttribute("noticeUnreadCount",noticeUnreadCount);
 
-        return "/site/letter";
+        return "site/letter";
     }
 
     @PreAuthorize("hasAuthority('user')")
@@ -87,7 +87,7 @@ public class MessageController implements CommunityConstant {
             messageService.readMessage(letterIds);
         }
 
-        return "/site/letter-detail";
+        return "site/letter-detail";
     }
 
     private List<Integer> getLetterIds(List<Message> letterList){
@@ -95,7 +95,7 @@ public class MessageController implements CommunityConstant {
         if(!letterList.isEmpty()){
             for(Message message:letterList){
                 User user = hostHolder.getUser();
-                if(hostHolder.getUser().getId().equals(message.getToId())&&message.getStatus().equals(0)){
+                if (hostHolder.getUser().getId() .equals(message.getToId()) && message.getStatus() .equals(0)) {
                     ids.add(message.getId());
                 }
             }
@@ -205,7 +205,7 @@ public class MessageController implements CommunityConstant {
         int noticeUnreadCount=messageService.findNoticeUnreadCount(user.getId(),null);
         model.addAttribute("noticeUnreadCount",noticeUnreadCount);
 
-        return "/site/notice";
+        return "site/notice";
     }
 
     @PreAuthorize("hasAuthority('user')")
@@ -239,7 +239,7 @@ public class MessageController implements CommunityConstant {
             messageService.readMessage(letterIds);
         }
 
-        return "/site/notice-detail";
+        return "site/notice-detail";
 
     }
 }

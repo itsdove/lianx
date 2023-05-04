@@ -34,6 +34,12 @@
     where username=#{username}
   </select>
 
+  <select id="selectByEmail" resultType="com.example.lianx.entity.User">
+    select <include refid="selectFields"></include>
+    from user
+    where  email=#{email}
+  </select>
+
   <insert id="insertUser" parameterType="com.example.lianx.entity.User" keyProperty="id">
     insert into user (<include refid="insertFields"></include>)
     values(#{username}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode}, #{headerUrl}, #{createTime})

@@ -98,5 +98,17 @@
              on q.post_id = p.id
         where p.status!=2
     </select>
-
+<!--    <select id="selectReplyDiscussPosts" resultType="ReplyPostResult">-->
+<!--        select-->
+<!--        id as post_id,title as post_title,content as reply_content,create_time as reply_create_ime-->
+<!--        from discuss_post-->
+<!--        where id in-->
+<!--        (select distinct (target_id)-->
+<!--        from comment-->
+<!--        where user_id=#{userId}-->
+<!--        and entity_type=1)-->
+<!--        and status!=2-->
+<!--        limit #{offset},#{limit}-->
+<!--        ;-->
+<!--    </select>-->
 </mapper>

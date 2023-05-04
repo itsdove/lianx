@@ -1,18 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="icon" href="https://gs.jnu.edu.cn/_upload/tpl/0b/4b/2891/template2891/images/logo.ico"/>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
-	<link rel="stylesheet" href="../css/global.css" />
-	<link rel="stylesheet" href="../css/login.css" />
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" th:href="@{/css/login.css}" />
 	<title>暨南大学学生论坛-忘记密码</title>
 </head>
 <body>
 	<div class="nk-container">
 		<!-- 头部 -->
-		<header class="bg-dark sticky-top">
+		<header class="bg-white sticky-top" th:fragment="header">
 			<div class="container">
 				<!-- 导航 -->
 				<nav class="navbar navbar-expand-lg navbar-dark">
@@ -25,34 +25,35 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mr-auto">
 							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link" href="../index.html">首页</a>
+								<a class="nav-link" th:href="@{/index}" style="color:black;">首页</a>
 							</li>
-							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link position-relative" href="letter.html">消息<span class="badge badge-danger">12</span></a>
+							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser!=null}">
+								<a class="nav-link position-relative" th:href="@{/letter/list}" style="color:black;">消息
+									<span class="badge badge-danger" th:text="${allUnreadCount!=0?allUnreadCount:''}" style="color:black;">12</span></a>
 							</li>
-							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link" href="register.html">注册</a>
+							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
+								<a class="nav-link" th:href="@{/register}" style="color:black;">注册</a>
 							</li>
-							<li class="nav-item ml-3 btn-group-vertical">
-								<a class="nav-link" href="login.html">登录</a>
+							<li class="nav-item ml-3 btn-group-vertical" th:if="${loginUser==null}">
+								<a class="nav-link" th:href="@{/login}" style="color:black;">登录</a>
 							</li>
-							<li class="nav-item ml-3 btn-group-vertical dropdown">
+							<li class="nav-item ml-3 btn-group-vertical dropdown" th:if="${loginUser!=null}">
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<img src="http://images.nowcoder.com/head/1t.png" class="rounded-circle" style="width:30px;"/>
+									<img th:src="${loginUser.headerUrl}" class="rounded-circle" style="width:30px;"/>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<a class="dropdown-item text-center" href="profile.html">个人主页</a>
-									<a class="dropdown-item text-center" href="setting.html">账号设置</a>
-									<a class="dropdown-item text-center" href="login.html">退出登录</a>
+									<a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}" style="color:black;">个人主页</a>
+									<a class="dropdown-item text-center" th:href="@{/user/setting}" style="color:black;">账号设置</a>
+									<a class="dropdown-item text-center" th:href="@{/logout}" style="color:black;">退出登录</a>
 									<div class="dropdown-divider"></div>
-									<span class="dropdown-item text-center text-secondary">nowcoder</span>
+									<span class="dropdown-item text-center text-secondary" th:utext="${loginUser.username}">nowcoder</span>
 								</div>
 							</li>
 						</ul>
 						<!-- 搜索 -->
-						<form class="form-inline my-2 my-lg-0" action="search.html">
-							<input class="form-control mr-sm-2" type="search" aria-label="Search" />
-							<button class="btn btn-outline-light my-2 my-sm-0" type="submit">搜索</button>
+						<form class="form-inline my-2 my-lg-0" method="get" th:action="@{/search}" >
+							<input class="form-control mr-sm-2" type="search" aria-label="Search" name="keyword" th:value="${keyword}"/>
+							<button class="btn btn-outline-light my-2 my-sm-0" type="submit" style="color:black;">搜索</button>
 						</form>
 					</div>
 				</nav>
@@ -62,11 +63,11 @@
 		<!-- 内容 -->
 		<div class="main">
 			<div class="container pl-5 pr-5 pt-3 pb-3 mt-3 mb-3">
-				<form class="mt-5">				
+				<form class="mt-5" th:action="@{/reset}">
 					<div class="form-group row">
-						<label for="your-email" class="col-sm-2 col-form-label text-right">邮箱:</label>
+						<label for="email" class="col-sm-2 col-form-label text-right">邮箱:</label>
 						<div class="col-sm-10">
-							<input type="email" class="form-control" id="your-email" placeholder="请输入您的邮箱!" required>
+							<input type="email" class="form-control" id="email" placeholder="请输入您的邮箱!" required>
 							<div class="invalid-feedback">
 								该邮箱已被注册!
 							</div>
@@ -81,7 +82,7 @@
 							</div>
 						</div>
 						<div class="col-sm-4">
-							<a href="javascript:;" class="btn btn-info form-control">获取验证码</a>
+							<button type="submit" class="btn btn-info form-control">获取验证码</button>
 						</div>
 					</div>	
 					<div class="form-group row mt-4">
@@ -127,6 +128,6 @@
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-	<script src="../js/global.js"></script>
+	<script th:src="@{/js/global.js}"></script>
 </body>
 </html>

@@ -84,7 +84,8 @@ public class FollowController implements CommunityConstant {
             }
         }
         model.addAttribute("users",followees);
-        return "site/followee";
+        model.addAttribute("type",1);
+        return "site/follower";
     }
 
     @RequestMapping(path = "/followers/{userId}",method = RequestMethod.GET)
@@ -106,7 +107,8 @@ public class FollowController implements CommunityConstant {
             }
         }
         model.addAttribute("users",followers);
-        return "site/followee";
+        model.addAttribute("type",0);
+        return "site/follower";
     }
 
     private boolean hasFollowed(int userId){

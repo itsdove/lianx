@@ -11,10 +11,6 @@ mybatis:
     mapUnderscoreToCamelCase: true
 
 spring:
-#  thymeleaf:
-#    cache: false
-#    prefix: classpath:/templates
-#    suffix: .html
   servlet:
     multipart:
       max-file-size: -1
@@ -66,6 +62,6 @@ spring:
 
 community:
   path:
-    domain: http://localhost:8080
-    upload: D:/myjob/upload
+    domain: http://47.115.203.121:8080
+    upload: /opt/photo
 

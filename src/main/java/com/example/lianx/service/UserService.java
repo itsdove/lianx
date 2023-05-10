@@ -7,6 +7,7 @@ import com.example.lianx.util.CommunityConstant;
 import com.example.lianx.util.CommunityUtil;
 import com.example.lianx.util.MailClient;
 import com.example.lianx.util.RedisKeyUtil;
+import jakarta.servlet.http.Cookie;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -219,4 +220,40 @@ public class UserService implements CommunityConstant {
         return map;
     }
 
+    public Map<String,Object> getyzm(String email){
+        Map<String,Object> map=new HashMap<>();
+
+        if(StringUtils.isBlank(email)){
+            map.put("emailMsg","邮箱不能为空");
+            return map;
+        }
+
+        User user=userMapper.selectByEmail(email);
+        if(user==null){
+            map.put("emailMsg","邮箱不存在");
+            return map;
+        }
+        String yzm=CommunityUtil.generateUUID().substring(0,5);
+        redisTemplate.opsForValue().set(email,yzm,600, TimeUnit.SECONDS);
+
+        Context context=new Context();
+        context.setVariable("email",user.getEmail());
+        context.setVariable("yzm",yzm);
+        String content=templateEngine.process("/mail/forget",context);
+        mailClient.sendMail(email, "忘记密码",content);
+        return map;
+    }
+
+
+    public Map<String, Object> reset(String email, String password) {
+        Map<String,Object> map=new HashMap<>();
+        User user=userMapper.selectByEmail(email);
+        if(user==null){
+            map.put("emailMsg","邮箱未注册");
+            return map;
+        }
+        user.setPassword(CommunityUtil.md5(password+user.getSalt()));
+        userMapper.updatePassword(user.getId(),user.getPassword());
+        return map;
+    }
 }

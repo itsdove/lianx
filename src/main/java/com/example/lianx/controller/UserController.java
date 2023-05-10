@@ -146,14 +146,19 @@ public class UserController implements CommunityConstant {
 
     @LoginRequired
     @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
-    public String updatePassword(String oldPassword, String newPassword, Model model) {
+    public String updatePassword(String oldPassword, String newPassword, Model model,String checkPassword) {
+        if(!checkPassword.equals(newPassword))
+        {
+            model.addAttribute("pwdError2", "密码不一致");
+            return "site/setting";
+        }
         User user = hostHolder.getUser();
         Map<String, Object> map = userService.updatePassword(user.getId(), oldPassword, newPassword);
         if (map == null || map.isEmpty()) {
             return "redirect:/logout";
         } else {
-            model.addAttribute("oldPasswordMsg", map.get("oldPasswordMsg"));
-            model.addAttribute("newPasswordMsg", map.get("newPasswordMsg"));
+            model.addAttribute("pwdError1", map.get("oldPasswordMsg"));
+            model.addAttribute("pwdError2", map.get("newPasswordMsg"));
             return "site/setting";
         }
     }

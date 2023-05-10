@@ -31,10 +31,11 @@ public class SecurityConfig  {
                     try {
                         authorize
                                 // 放行登录接口
-                                .requestMatchers("/forget",
+                                .requestMatchers(
                                         "/user/reply/*","/user/post/*",
                                         "/login","/kaptcha","/register",
                                         "/index","/activation/*/*","/user/header/*",
+                                        "/getyzm","/forget",
                                         "/discuss/detail/*","/user/profile/*").permitAll()
                                 // 放行资源目录
                                 .requestMatchers("/css/*","/js/*").permitAll()

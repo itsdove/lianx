@@ -21,12 +21,12 @@
 				<!-- 选项 -->
 				<ul class="nav nav-tabs mb-3">
 					<li class="nav-item">
-						<a th:class="|nav-link ${type==0?'active':''}|" th:href="@{|/followees/${user.id}|}">
+						<a th:class="|nav-link ${type==1?'active':''}|" th:href="@{|/followees/${user.id}|}">
 							<i class="text-info" th:utext="${user.username}">Nowcoder</i> 关注的人
 						</a>
 					</li>
 					<li class="nav-item">
-						<a th:class="|nav-link ${type==1?'active':''}|" th:href="@{|/followers/${user.id}|}">
+						<a th:class="|nav-link ${type==0?'active':''}|" th:href="@{|/followers/${user.id}|}">
 							关注 <i class="text-info" th:utext="${user.username}">Nowcoder</i> 的人
 						</a>
 					</li>

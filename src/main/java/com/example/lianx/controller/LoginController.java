@@ -180,13 +180,42 @@ public class  LoginController implements CommunityConstant {
         SecurityContextHolder.clearContext();
         return "redirect:/login";
     }
+
     @RequestMapping(path="/forget",method = RequestMethod.GET)
-    public  String logout() {
-        return "site/forget";
+    public  String forget() {
+        return "/site/forget-f";
     }
 
-    @RequestMapping(path="/reset",method = RequestMethod.POST)
-    public  String reset(String email) {
-        return "site/forget";
+    @RequestMapping(path="/forget",method = RequestMethod.POST)
+    public  String reset(String email,String verifycode,String password,Model model) {
+        String yzm= (String) redisTemplate.opsForValue().get(email);
+        if(StringUtils.isBlank(yzm)||StringUtils.isBlank(verifycode)||!yzm.equalsIgnoreCase(verifycode)){
+            model.addAttribute("codeMsg","验证码不正确");
+            return "/site/forget";
+        }
+
+        Map<String ,Object> map=userService.reset(email,password);
+        if(map==null||map.isEmpty()){
+            model.addAttribute("msg","注册成功，已发送邮件");
+            model.addAttribute("target","/index");
+            return "/site/login";
+        }else{
+            model.addAttribute("passwordMsg",map.get("passwordMsg"));
+            model.addAttribute("emailMsg",map.get("emailMsg"));
+            return "/site/forget";
+        }
+    }
+
+    @RequestMapping(path="/getyzm",method = RequestMethod.GET)
+    public String getyzm(String email,Model model) {
+        Map<String ,Object> map=userService.getyzm(email);
+        if(map==null||map.isEmpty()){
+            model.addAttribute("msg","注册成功，已发送邮件");
+            return "/site/forget";
+        }else{
+            model.addAttribute("emailMsg",map.get("emailMsg"));
+            return "/site/forget-f";
+        }
+
     }
 }
